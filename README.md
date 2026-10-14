@@ -39,6 +39,16 @@ Talk track: [SPIN-FACTORY.md](SPIN-FACTORY.md) (Reel Factory / FAC-1 / FACCTX).
 
 `evaluate` and `evaluateAutoplay` are the evaluation surface. An expired or missing DE licence hard-fails **deny** as **AS-DE-002**.
 
+## Branches and PRs
+
+![Branches and PRs](docs/images/branches.png)
+
+PR #2 merges fac-1/as-de-002-first-attempt into main (not run in the demo).
+
+PR #3 merges fac-1/as-de-002-remediated into fac-1/as-de-002-first-attempt (merged live).
+
+Dotted lines are merges not done yet.
+
 ## What to show in a customer meeting
 
 1. Open the table on **UK**. Autoplay and turbo stay locked. Manual spins wait 2.5 seconds. Every sixth spin raises a reality-check overlay (AS-UK-001 / AS-UK-002).
