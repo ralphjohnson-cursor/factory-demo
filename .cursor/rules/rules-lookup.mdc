@@ -1,0 +1,30 @@
+---
+description: Before any code change for a FAC ticket (GitHub Issue), look up the applicable FACCTX rules, post them on the issue, and record the rule IDs for CI.
+alwaysApply: true
+---
+
+# Step one on every FAC ticket: fill in "Rules that apply"
+
+When you are working from a GitHub Issue in ralphjohnson-cursor/factory-demo whose title starts with a FAC key (for example `FAC-1: ...`), do this BEFORE writing or changing any code.
+
+1. Read the issue (key, summary, description, the Jurisdiction(s), and any Feature area).
+2. For each jurisdiction, look in the FACCTX rule pages, which are the `rules/` folder of ralphjohnson-cursor/factory-demo-docs (`rules/AS-XX-NNN.md`, labelled by jurisdiction and feature area).
+3. From each matching page, take the rule ID (AS-XX-NNN), the one-line summary, the full rule text and the page link (https://github.com/ralphjohnson-cursor/factory-demo-docs/blob/main/rules/AS-XX-NNN.md).
+4. Post ONE comment on the issue in this format:
+
+   Rules that apply (auto-filled from FACCTX)
+   - AS-DE-002: <summary>
+     <full rule text>
+     Source: <rule page link>
+   (one entry per rule)
+
+5. If a jurisdiction has no matching page, say so in the comment and stop. Do not guess a rule.
+6. After that comment is posted, write or update `.spin/rules-applied.json` before changing code. The file is what CI reads. CI does not read the issue or the docs repo. Shape:
+   - `ticket`: the FAC key
+   - `rules`: one entry per rule in the comment, each with `rule_id`, `jurisdiction`, and `source_url` (the rule page link from the comment)
+   Copy those three fields from the comment. Do not put the rule text in the file. A malformed file fails the validator in `tests/helpers/rules-applied.ts` (schema: `.spin/rules-applied.schema.json`).
+7. Only then start the change. Every rule ID in that comment and in `.spin/rules-applied.json` must be:
+   - listed in the PR description, and
+   - covered by at least one test whose name or comment includes the rule ID.
+
+Never invent rules, paraphrase rule text, or pull rules from anywhere other than FACCTX. The docs repo is the source of record.

@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": ".spin/rules-applied.schema.json",
+  "title": "Rule IDs cited for a FAC ticket",
+  "description": "Bridge between the Rules that apply comment on a FAC ticket (GitHub Issue) and CI. CI reads this file. CI does not read the issue or the docs repo.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["ticket", "rules"],
+  "properties": {
+    "ticket": {
+      "type": "string",
+      "pattern": "^[A-Z][A-Z0-9]+-\\d+$",
+      "description": "Ticket key, for example FAC-1."
+    },
+    "rules": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["rule_id", "jurisdiction", "source_url"],
+        "properties": {
+          "rule_id": {
+            "type": "string",
+            "pattern": "^AS-[A-Z]{2}-\\d{3}$",
+            "description": "FACCTX rule ID, for example AS-DE-002."
+          },
+          "jurisdiction": {
+            "type": "string",
+            "enum": ["UK", "DE", "ES", "NL", "NJ", "PA", "MT", "SE", "IT"]
+          },
+          "source_url": {
+            "type": "string",
+            "format": "uri",
+            "description": "HTTPS link to the rule page under https://github.com/ralphjohnson-cursor/factory-demo-docs/."
+          }
+        }
+      }
+    }
+  }
+}

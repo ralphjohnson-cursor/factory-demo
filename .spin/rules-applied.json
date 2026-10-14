@@ -1,0 +1,10 @@
+{
+  "ticket": "FAC-1",
+  "rules": [
+    {
+      "rule_id": "AS-DE-002",
+      "jurisdiction": "DE",
+      "source_url": "https://github.com/ralphjohnson-cursor/factory-demo-docs/blob/main/rules/AS-DE-002.md"
+    }
+  ]
+}
