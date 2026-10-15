@@ -1,5 +1,7 @@
 # Reel Factory
 
+> **Attended the session?** Start with the [session follow-up guide](SESSION.md).
+
 Premium iGaming spin demo for **a demo operator**. It plays like a dark-luxury online slot while the AS-* rule engine rewrites autoplay, turbo, coolers, and reality checks by jurisdiction.
 
 This repo is the playable app plus the **FAC-1 / FACCTX** factory spine. Companion narrative can live in `factory-demo-docs`. A change starts from a GitHub Issue in factory-demo (key FAC-N). The agent copies the matching FACCTX rules onto that ticket, then implements the fix from the ticket.
