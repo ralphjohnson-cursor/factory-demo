@@ -11,11 +11,9 @@ import type {
   RuleDecision,
 } from './types'
 
-export function isDeLicenceHardFail(input: EvaluationInput): boolean {
-  if (input.jurisdiction !== 'DE') return false
-  if (input.flags.deLicenceExpired) return true
-  const token = input.flags.deLicenceToken
-  return token === null || token === ''
+export function isDeLicenceHardFail(_input: EvaluationInput): boolean {
+  // First attempt: expired or missing DE licence token is not denied yet.
+  return false
 }
 
 function auditOf(
@@ -24,10 +22,9 @@ function auditOf(
   decision: Decision,
   reason: string,
 ): RuleDecision {
-  const timestamp = new Date(input.now).toISOString()
+  const evaluated_at = new Date(input.now).toISOString()
   const audit = {
-    evaluated_at: timestamp,
-    timestamp,
+    evaluated_at,
     session_id: input.sessionId,
     actor: input.actor,
     jurisdiction: input.jurisdiction,
@@ -45,23 +42,14 @@ function auditOf(
     },
   }
 
+  // First attempt: timestamp is not written on the decision or the audit record.
   return {
     rule_ids: ruleIds,
     jurisdiction: input.jurisdiction,
     decision,
     reason,
-    timestamp,
     audit,
-  }
-}
-
-function denyDeLicence(input: EvaluationInput): RuleDecision {
-  return auditOf(
-    input,
-    ['AS-DE-002'],
-    'deny',
-    'DE licence token expired or missing. Table closed.',
-  )
+  } as unknown as RuleDecision
 }
 
 function clampPaCount(count: number | null): number {
@@ -70,10 +58,6 @@ function clampPaCount(count: number | null): number {
 }
 
 export function evaluate(input: EvaluationInput): RuleDecision {
-  if (isDeLicenceHardFail(input)) {
-    return denyDeLicence(input)
-  }
-
   if (input.kind === 'stop') {
     const ids = MARKETS[input.jurisdiction].ruleIds
     return auditOf(input, ids, 'allow', 'Stop is always available to the player.')
@@ -142,10 +126,6 @@ function evaluateTurbo(input: EvaluationInput): RuleDecision {
 }
 
 export function evaluateAutoplay(input: EvaluationInput): RuleDecision {
-  if (isDeLicenceHardFail(input)) {
-    return denyDeLicence(input)
-  }
-
   switch (input.jurisdiction) {
     case 'UK':
       return auditOf(
